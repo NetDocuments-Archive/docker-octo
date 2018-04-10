@@ -1,10 +1,15 @@
-FROM  microsoft/dotnet:2.0-runtime
+FROM  microsoft/powershell
 MAINTAINER Spencer Owen <sowen@netdocuments.com>
 
-WORKDIR /octo
+ENV OCTOVERSION 4.32.0
+ENV DEBIAN_FRONTEND noninteractive
 
-ENV OCTOVERSION 4.31.7
-RUN curl -o OctopusTools.tar.gz https://download.octopusdeploy.com/octopus-tools/$OCTOVERSION/OctopusTools.$OCTOVERSION.portable.tar.gz && tar -xvzf OctopusTools.tar.gz && rm OctopusTools.tar.gz
+RUN apt-get update -qq && apt-get install libunwind8 icu-devtools -y
+RUN cd /usr/bin && curl -s https://download.octopusdeploy.com/octopus-tools/$OCTOVERSION/OctopusTools.$OCTOVERSION.ubuntu.16.04-x64.tar.gz | tar xvz
 
-ENTRYPOINT [ "dotnet", "Octo.dll" ]
-CMD [ "help" ]
+
+ADD entrypoint.sh entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD []
