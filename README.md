@@ -17,5 +17,5 @@ Upload to docker hub
 docker login
 docker push <yourname>/octo
 docker tag <yourname>/octo:latest <yourname>/octo:$(date +%Y%m%d)
-dccker push <yourname>/octo:$(date +%Y%m%d)
+docker push <yourname>/octo:$(date +%Y%m%d)
 ```
